@@ -5,8 +5,10 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/2.4/manual/en/scripting/life-cycle-callbacks.html
 
-const {ccclass, property} = cc._decorator;
+import {MOVE_SPEED_PXPF} from "./Constant";
+import {Global} from "./Global";
 
+const {ccclass, property} = cc._decorator;
 @ccclass
 export default class NewClass extends cc.Component {
 
@@ -20,9 +22,17 @@ export default class NewClass extends cc.Component {
 
     // onLoad () {}
 
-    start () {
+    start() {
 
     }
 
-    // update (dt) {}
+    update(dt) {
+        if (Global.game_ended) {
+            return
+        }
+        this.node.x = this.node.x - MOVE_SPEED_PXPF;
+        if (this.node.x < 0) {
+            // todo remove and recycle
+        }
+    }
 }

@@ -5,16 +5,15 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/2.4/manual/en/scripting/life-cycle-callbacks.html
 
+import RigidBody = cc.RigidBody;
+import PhysicsBoxCollider = cc.PhysicsBoxCollider;
+import {GEN_TUNNEL_INTERVAL, MAX_TUNNEL_HEIGHT, MIN_TUNNEL_HEIGHT, SPACE_HEIGHT, TOP_POS_Y} from "./Constant";
+import {Global} from "./Global";
+
 const {ccclass, property} = cc._decorator;
 
-const TOP_POS_Y = 600
-const SPACE_HEIGHT = 200
-const MIN_TUNNEL_HEIGHT = 100
-const MAX_TUNNEL_HEIGHT = TOP_POS_Y - SPACE_HEIGHT - MIN_TUNNEL_HEIGHT
-const WIDTH_CENTER_POINT = 200
-
 @ccclass
-export default class NewClass extends cc.Component {
+export default class Game extends cc.Component {
 
     @property(cc.Label)
     label: cc.Label = null;
@@ -25,21 +24,35 @@ export default class NewClass extends cc.Component {
     @property(cc.Prefab)
     pref_tunnel: cc.Prefab = null
 
-    time = 0
+    @property(cc.Prefab)
+    pref_bird: cc.Prefab = null
+
+    @property(cc.Prefab)
+    fail: cc.Prefab = null
+
+    last_gen_tunnel_time = 0
 
     tunnel_count = 0
 
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
-        cc.director.getCollisionManager().enabled = true
+        Global.game = this
+        let collision_manager = cc.director.getCollisionManager()
+        collision_manager.enabled = true
+        collision_manager.enabledDebugDraw = true
+        collision_manager.enabledDrawBoundingBox = true
         cc.director.getPhysicsManager().enabled = true
+        cc.director.getPhysicsManager().debugDrawFlags = cc.PhysicsManager.DrawBits.e_aabbBit |
+            // cc.PhysicsManager.DrawBits.e_pairBit |
+            // cc.PhysicsManager.DrawBits.e_centerOfMassBit |
+            cc.PhysicsManager.DrawBits.e_jointBit |
+            cc.PhysicsManager.DrawBits.e_shapeBit
+        ;
+        // this.generate_bird()
     }
 
     start() {
-        // for (let i = 0; i <= 10; i++) {
-        //     this.generate_paired_tunnels_at(200 * i)
-        // }
     }
 
     /**
@@ -48,14 +61,27 @@ export default class NewClass extends cc.Component {
      * @protected
      */
     protected update(dt: number) {
-        const last_second = Math.floor(this.time)
-        this.time += dt
-        const now_second = Math.floor(this.time)
-        // todo : 使这里支持为 2 、3 等的状态
-        if (now_second - last_second >= 1) {
-            this.tunnel_count++
-            this.generate_paired_tunnels_at(this.tunnel_count * WIDTH_CENTER_POINT)
+        if (Global.game_ended) {
+            return
         }
+        const now = Date.now()
+        if (now - this.last_gen_tunnel_time >= GEN_TUNNEL_INTERVAL) {
+            this.tunnel_count++
+            this.generate_paired_tunnels_at(900)
+            this.last_gen_tunnel_time = now
+        }
+    }
+
+    /**
+     * gen bird
+     */
+    generate_bird() {
+        if (this.pref_bird == null) {
+            throw Error("Has not set pref_bird!")
+        }
+        const bird = cc.instantiate(this.pref_bird)
+        bird.parent = this.node.parent
+        bird.setPosition(20, TOP_POS_Y / 2)
     }
 
     /**
@@ -73,6 +99,9 @@ export default class NewClass extends cc.Component {
         let top_tunnel = cc.instantiate(this.pref_tunnel);
         top_tunnel.parent = this.node
         top_tunnel.height = top_tunnel_height
+        let top_tunnel_collider = top_tunnel.getComponent(PhysicsBoxCollider)
+        top_tunnel_collider.size = cc.size(top_tunnel.width, top_tunnel_height)
+        top_tunnel_collider.apply()
         top_tunnel.setPosition(cc.v2(x, TOP_POS_Y - top_tunnel_height / 2))
 
 
@@ -80,9 +109,22 @@ export default class NewClass extends cc.Component {
         let bottom_tunnel = cc.instantiate(this.pref_tunnel);
         bottom_tunnel.parent = this.node
         bottom_tunnel.height = bottom_tunnel_height
+        let bottom_tunnel_collider = bottom_tunnel.getComponent(PhysicsBoxCollider)
+        bottom_tunnel_collider.size = cc.size(bottom_tunnel.width, bottom_tunnel_height)
+        bottom_tunnel_collider.apply()
         bottom_tunnel.setPosition(cc.v2(x, bottom_tunnel_height / 2))
 
     }
 
-    // update (dt) {}
+    endGame() {
+        console.log("游戏结束！")
+        this.add_fail_label()
+    }
+
+    add_fail_label() {
+        const fail_label = new cc.Label()
+        fail_label.string = "游戏失败啦！"
+        fail_label.node.parent = this.node
+    }
+
 }

@@ -13,7 +13,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "tunnel",
+    "_name": "bird",
     "_objFlags": 0,
     "_parent": null,
     "_children": [],
@@ -45,8 +45,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 118,
-      "height": 118
+      "width": 114,
+      "height": 54
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -57,14 +57,14 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        0,
-        0,
+        62.691,
+        318.767,
         0,
         0,
         0,
         0,
         1,
-        0.5,
+        1,
         1,
         1
       ]
@@ -78,8 +78,8 @@
     "_skewX": 0,
     "_skewY": 0,
     "_is3DNode": false,
-    "_groupIndex": 1,
-    "groupIndex": 1,
+    "_groupIndex": 0,
+    "groupIndex": 0,
     "_id": ""
   },
   {
@@ -98,7 +98,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "95557876-60d6-4c5d-851b-0b616276e475"
+      "__uuid__": "51d25115-aedb-49f5-ae21-a7baaafabf8f"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -115,7 +115,7 @@
     "_id": ""
   },
   {
-    "__type__": "374c4rGMO1DKIZNdZ++KIyi",
+    "__type__": "a6040Vn+4NFmJD1YGPXkn8F",
     "_name": "",
     "_objFlags": 0,
     "node": {
@@ -134,7 +134,7 @@
       "__id__": 1
     },
     "_enabled": true,
-    "_type": 0,
+    "_type": 2,
     "_allowSleep": true,
     "_gravityScale": 1,
     "_linearDamping": 0,
@@ -172,8 +172,8 @@
     },
     "_size": {
       "__type__": "cc.Size",
-      "width": 118,
-      "height": 118
+      "width": 114,
+      "height": 54
     },
     "_id": ""
   },
