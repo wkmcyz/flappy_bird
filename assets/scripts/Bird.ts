@@ -12,9 +12,9 @@ const {ccclass, property} = cc._decorator;
 
 const JUMP_COOL_DOWN_MS = 1000
 
-const JUMP_IMPULSE = 1800
+const JUMP_IMPULSE_MULTI_MASS = 333
 
-const GRAVITY_SCALE = 1.5
+const GRAVITY_SCALE = 1.8
 
 @ccclass
 export default class Bird extends cc.Component {
@@ -29,7 +29,7 @@ export default class Bird extends cc.Component {
         }
         console.log("on BeginContact")
         Global.endGame()
-        this.removeKeyListeners()
+        // this.removeKeyListeners()
     }
 
     // 只在两个碰撞体结束接触时被调用一次
@@ -59,7 +59,6 @@ export default class Bird extends cc.Component {
     }
 
     onLoad() {
-        console.log("bird on load")
         this.node.getComponent(RigidBody).gravityScale = GRAVITY_SCALE
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this);
@@ -74,11 +73,9 @@ export default class Bird extends cc.Component {
             case cc.macro.KEY.space:
                 const now = Date.now()
                 if (now - this.last_jump_time > JUMP_COOL_DOWN_MS) {
-                    const force = cc.v2(0, JUMP_IMPULSE)
-                    const x = this.node.width / 2
                     let rigid_body = this.node.getComponent(RigidBody)
+                    const force = cc.v2(0, rigid_body.getMass() * JUMP_IMPULSE_MULTI_MASS)
                     rigid_body.applyLinearImpulse(force, rigid_body.getWorldCenter(), true);
-                    console.log('Jump!');
                 }
                 break;
         }
@@ -86,9 +83,6 @@ export default class Bird extends cc.Component {
 
     onKeyUp(event) {
         switch (event.keyCode) {
-            case cc.macro.KEY.a:
-                console.log('release a key');
-                break;
         }
     }
 
