@@ -30,26 +30,39 @@ export default class NewClass extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
     // 只在两个碰撞体开始接触时被调用一次
     onBeginContact(contact, selfCollider, otherCollider) {
+        if (Global.game_ended) {
+            return
+        }
         console.log("on BeginContact")
-        Global.game.endGame()
+        Global.endGame()
+        this.removeKeyListeners()
     }
 
     // 只在两个碰撞体结束接触时被调用一次
     onEndContact(contact, selfCollider, otherCollider) {
+        if (Global.game_ended) {
+            return
+        }
         console.log("on onEndContact")
     }
 
     // 每次将要处理碰撞体接触逻辑时被调用
     onPreSolve(contact, selfCollider, otherCollider) {
+        if (Global.game_ended) {
+            return
+        }
         console.log("on onPreSolve")
     }
 
     // 每次处理完碰撞体接触逻辑时被调用
     onPostSolve(contact, selfCollider, otherCollider) {
+        if (Global.game_ended) {
+            return
+        }
         console.log("on onPostSolve")
     }
 
-    endGame() {
+    removeKeyListeners() {
         cc.systemEvent.off(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
         cc.systemEvent.off(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this);
     }
