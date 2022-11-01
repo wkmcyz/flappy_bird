@@ -9,6 +9,5 @@ export class Global {
     static endGame() {
         Global.game_ended = true
         Global.game.endGame()
-        cc.director.pause()
     }
 }

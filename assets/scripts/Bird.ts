@@ -17,13 +17,7 @@ const JUMP_IMPULSE = 1800
 const GRAVITY_SCALE = 1.5
 
 @ccclass
-export default class NewClass extends cc.Component {
-
-    @property(cc.Label)
-    label: cc.Label = null;
-
-    @property
-    text: string = 'hello';
+export default class Bird extends cc.Component {
 
     last_jump_time = 0
 
@@ -43,7 +37,6 @@ export default class NewClass extends cc.Component {
         if (Global.game_ended) {
             return
         }
-        console.log("on onEndContact")
     }
 
     // 每次将要处理碰撞体接触逻辑时被调用
@@ -51,7 +44,6 @@ export default class NewClass extends cc.Component {
         if (Global.game_ended) {
             return
         }
-        console.log("on onPreSolve")
     }
 
     // 每次处理完碰撞体接触逻辑时被调用
@@ -59,7 +51,6 @@ export default class NewClass extends cc.Component {
         if (Global.game_ended) {
             return
         }
-        console.log("on onPostSolve")
     }
 
     removeKeyListeners() {
@@ -68,6 +59,7 @@ export default class NewClass extends cc.Component {
     }
 
     onLoad() {
+        console.log("bird on load")
         this.node.getComponent(RigidBody).gravityScale = GRAVITY_SCALE
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this);
@@ -86,7 +78,7 @@ export default class NewClass extends cc.Component {
                     const x = this.node.width / 2
                     let rigid_body = this.node.getComponent(RigidBody)
                     rigid_body.applyLinearImpulse(force, rigid_body.getWorldCenter(), true);
-                    console.log('Press a key');
+                    console.log('Jump!');
                 }
                 break;
         }

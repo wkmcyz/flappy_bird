@@ -5,12 +5,12 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/2.4/manual/en/scripting/life-cycle-callbacks.html
 
-import {MOVE_SPEED_PXPF} from "./Constant";
+import {MOVE_SPEED_PXPF, RECYCLE_TUNNEL_POS_X} from "./Constant";
 import {Global} from "./Global";
 
 const {ccclass, property} = cc._decorator;
 @ccclass
-export default class NewClass extends cc.Component {
+export default class Tunnel extends cc.Component {
 
     @property(cc.Label)
     label: cc.Label = null;
@@ -31,8 +31,8 @@ export default class NewClass extends cc.Component {
             return
         }
         this.node.x = this.node.x - MOVE_SPEED_PXPF;
-        if (this.node.x < 0) {
-            // todo remove and recycle
+        if (this.node.x < RECYCLE_TUNNEL_POS_X) {
+            Global.game.recycleTunnel(this.node)
         }
     }
 }
