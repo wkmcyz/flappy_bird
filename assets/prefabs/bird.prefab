@@ -64,9 +64,9 @@
         0,
         0,
         1,
-        1,
-        1,
-        1
+        0.505,
+        0.715,
+        1.676
       ]
     },
     "_eulerAngles": {
@@ -122,8 +122,6 @@
       "__id__": 1
     },
     "_enabled": true,
-    "label": null,
-    "text": "hello",
     "_id": ""
   },
   {
@@ -146,7 +144,7 @@
     },
     "_angularVelocity": 0,
     "_fixedRotation": false,
-    "enabledContactListener": false,
+    "enabledContactListener": true,
     "bullet": false,
     "awakeOnLoad": true,
     "_id": ""

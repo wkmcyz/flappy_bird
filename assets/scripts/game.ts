@@ -8,6 +8,7 @@
 import RigidBody = cc.RigidBody;
 import PhysicsBoxCollider = cc.PhysicsBoxCollider;
 import {
+    BIRD_INITIAL_X,
     GEN_TUNNEL_INTERVAL_MS,
     GEN_TUNNEL_POS_X,
     MAX_TUNNEL_HEIGHT,
@@ -25,6 +26,9 @@ export default class Game extends cc.Component {
     @property(cc.Prefab)
     pref_tunnel: cc.Prefab = null
 
+    @property(cc.Prefab)
+    pref_bird: cc.Prefab = null
+
     @property(cc.Camera)
     main_camera: cc.Camera = null
 
@@ -37,20 +41,17 @@ export default class Game extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
+        this.check()
         Global.game = this
-        let collision_manager = cc.director.getCollisionManager()
-        collision_manager.enabled = true
-        collision_manager.enabledDebugDraw = true
-        collision_manager.enabledDrawBoundingBox = true
-        cc.director.getPhysicsManager().enabled = true
-        cc.director.getPhysicsManager().debugDrawFlags = cc.PhysicsManager.DrawBits.e_aabbBit |
-            // cc.PhysicsManager.DrawBits.e_pairBit |
-            // cc.PhysicsManager.DrawBits.e_centerOfMassBit |
-            cc.PhysicsManager.DrawBits.e_jointBit |
-            cc.PhysicsManager.DrawBits.e_shapeBit
-        ;
-
+        Global.startGame()
         this.tunnel_pool = new cc.NodePool()
+    }
+
+    buildNewGame() {
+        this.node.removeAllChildren(true)
+        const bird = cc.instantiate(this.pref_bird)
+        bird.parent = this.node
+        bird.setPosition(BIRD_INITIAL_X, 400)
     }
 
     check() {
@@ -59,6 +60,9 @@ export default class Game extends cc.Component {
         }
         if (this.main_camera == null) {
             throw Error("Has not set main_camera!")
+        }
+        if (this.pref_bird == null) {
+            throw Error("Has not set pref_bird!")
         }
     }
 
@@ -140,7 +144,7 @@ export default class Game extends cc.Component {
     add_fail_label() {
         const fail_label_node = new cc.Node()
         fail_label_node.addComponent(cc.Label)
-        fail_label_node.getComponent(cc.Label).string = "游戏失败啦！"
+        fail_label_node.getComponent(cc.Label).string = "游戏失败啦！\n按空格重新开始游戏！"
         fail_label_node.parent = this.main_camera.node
         fail_label_node.setPosition(this.main_camera.node.width / 2, this.main_camera.node.height / 2)
     }

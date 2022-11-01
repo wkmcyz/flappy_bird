@@ -20,6 +20,9 @@ export const GEN_TUNNEL_INTERVAL_MS = TUNNEL_HORIZONTAL_SPACE * 1.0 / MOVE_SPEED
 export const GEN_TUNNEL_POS_X = 1000
 export const RECYCLE_TUNNEL_POS_X = -100
 
+// bird initial pos
+export const BIRD_INITIAL_X = 80
+
 console.log(
     "GEN_TUNNEL_INTERVAL_MS : " + GEN_TUNNEL_INTERVAL_MS
 )

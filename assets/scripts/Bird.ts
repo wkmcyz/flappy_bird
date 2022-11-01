@@ -27,9 +27,8 @@ export default class Bird extends cc.Component {
         if (Global.game_ended) {
             return
         }
-        console.log("on BeginContact")
         Global.endGame()
-        // this.removeKeyListeners()
+        this.removeKeyListeners()
     }
 
     // 只在两个碰撞体结束接触时被调用一次

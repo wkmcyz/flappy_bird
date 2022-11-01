@@ -778,7 +778,7 @@
       "__id__": 14
     },
     "asset": {
-      "__uuid__": "7e12d15d-438b-42ae-becf-377475c953e9"
+      "__uuid__": "fc37d9ca-11a9-4549-b60b-3f04b747d482"
     },
     "fileId": "",
     "sync": false
@@ -793,6 +793,9 @@
     "_enabled": true,
     "pref_tunnel": {
       "__uuid__": "c48b66a0-3e0c-4662-97b0-3ae1154b4e9c"
+    },
+    "pref_bird": {
+      "__uuid__": "fc37d9ca-11a9-4549-b60b-3f04b747d482"
     },
     "main_camera": {
       "__id__": 21
